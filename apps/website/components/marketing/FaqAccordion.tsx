@@ -2,7 +2,7 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import { Minus, Plus } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 type Item = { q: string; a: string };
 type Group = { category?: string; items: Item[] };

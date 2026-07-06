@@ -7,7 +7,7 @@ import { JournalCard } from "@/components/marketing/JournalCard";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { articleCategories, articles } from "@/data/blog";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 export default function BlogPage() {
   const [cat, setCat] = useState<(typeof articleCategories)[number]>("All");

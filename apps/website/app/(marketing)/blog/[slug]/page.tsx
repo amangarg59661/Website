@@ -12,7 +12,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { renderArticleBody } from "@/lib/mdx/renderArticle";
 import { articleLd, breadcrumbLd, JsonLd } from "@/lib/seo/jsonld";
 import { site } from "@/config/site";
-import { formatDate } from "@/lib/utils/format";
+import { formatDate } from "@edss/utils/format";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));

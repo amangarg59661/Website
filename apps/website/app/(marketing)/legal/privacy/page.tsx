@@ -4,7 +4,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { legal } from "@/config/legal";
 import { site } from "@/config/site";
-import { formatDate } from "@/lib/utils/format";
+import { formatDate } from "@edss/utils/format";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

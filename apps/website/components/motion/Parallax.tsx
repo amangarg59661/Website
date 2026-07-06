@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 /**
  * Container-scoped pointer parallax. Children translate on pointer move within

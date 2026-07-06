@@ -16,7 +16,8 @@ export function formatDateShort(input: string | Date, locale = "en-US") {
 }
 
 export function absoluteUrl(path: string, base?: string) {
-  const origin = base ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://elitedigital.studio";
+  const origin =
+    base ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://elitedigital.studio";
   if (path.startsWith("http")) return path;
   return `${origin}${path.startsWith("/") ? path : `/${path}`}`;
 }

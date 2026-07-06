@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { cases, type Case } from "@/data/portfolio";
 import { Container } from "@/components/layout/Container";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 const INDUSTRIES = ["All", ...Array.from(new Set(cases.map((c) => c.industry)))];
 

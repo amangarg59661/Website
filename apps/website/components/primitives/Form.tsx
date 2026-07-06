@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, TextareaHTMLAttributes, LabelHTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
   return (

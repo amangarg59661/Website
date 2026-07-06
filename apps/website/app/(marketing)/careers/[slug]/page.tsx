@@ -7,7 +7,7 @@ import { CtaBand } from "@/components/marketing/CtaBand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/primitives/Button";
-import { formatDate } from "@/lib/utils/format";
+import { formatDate } from "@edss/utils/format";
 import { site } from "@/config/site";
 
 type Role = {

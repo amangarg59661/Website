@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@edss/utils/cn";
 
 type Props = HTMLAttributes<HTMLElement> & {
   as?: "section" | "div" | "article" | "footer" | "header";

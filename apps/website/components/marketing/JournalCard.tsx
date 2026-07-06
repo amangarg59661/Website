@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/data/blog";
-import { formatDate } from "@/lib/utils/format";
+import { formatDate } from "@edss/utils/format";
 
 export function JournalCard({ a, large }: { a: Article; large?: boolean }) {
   return (
