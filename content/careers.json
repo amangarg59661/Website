@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "senior-fullstack-engineer",
+    "title": "Senior Full-Stack Engineer",
+    "team": "Engineering",
+    "location": "Remote — Global (India / EU / Americas overlap)",
+    "type": "Full-time",
+    "commitment": "40h / week",
+    "posted": "2026-06-14",
+    "summary": "Lead technical delivery on multi-quarter engagements across finance, health, and logistics clients. TypeScript + one strong backend language.",
+    "responsibilities": [
+      "Own the technical shape of engagements from discovery to handoff",
+      "Architect and ship platforms that survive their first re-org",
+      "Mentor two to three engineers and set the bar for craft"
+    ],
+    "requirements": [
+      "6+ years shipping production systems",
+      "Deep TypeScript. One of Kotlin / Go / Elixir / Rust at production depth.",
+      "Comfort with ambiguity — engagements start before the spec exists"
+    ]
+  },
+  {
+    "slug": "brand-designer",
+    "title": "Brand Designer",
+    "team": "Design",
+    "location": "Bengaluru or Remote (EU / GCC overlap)",
+    "type": "Full-time",
+    "commitment": "40h / week",
+    "posted": "2026-06-01",
+    "summary": "Identity work for boutique clients across finance, wealth, and technology. Typography-first. Craft over speed.",
+    "responsibilities": [
+      "Lead identity engagements from positioning to guidelines",
+      "Work with type designers and photographers we collaborate with",
+      "Present directly to founders and boards"
+    ],
+    "requirements": [
+      "5+ years brand identity work — portfolio speaks first",
+      "Fluency in typography, colour theory, and print production",
+      "Comfort presenting work to executives"
+    ]
+  },
+  {
+    "slug": "growth-strategist",
+    "title": "Growth Strategist",
+    "team": "Growth",
+    "location": "London or Remote (Americas overlap)",
+    "type": "Full-time",
+    "commitment": "40h / week",
+    "posted": "2026-05-20",
+    "summary": "Run performance marketing engagements for DTC and B2B clients. Carry a P&L. Own attribution the CFO can defend.",
+    "responsibilities": [
+      "Own CAC / LTV / MER on client accounts spending $500k–$5M/mo",
+      "Design and run incrementality studies",
+      "Present to CMOs and CEOs weekly"
+    ],
+    "requirements": [
+      "5+ years managing paid media spend at scale",
+      "Fluency across Meta, Google, TikTok, LinkedIn — and the measurement stack around them",
+      "Comfort with SQL, Python, or dbt"
+    ]
+  }
+]

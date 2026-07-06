@@ -1,0 +1,314 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useId, useState } from "react";
+import { site } from "@/config/site";
+import { primaryNav } from "@/data/nav";
+import { services } from "@/data/services";
+import { useHeaderState } from "@/lib/hooks";
+import { cn } from "@/lib/utils/cn";
+import { Wordmark } from "@/components/icons";
+import { ButtonLink } from "@/components/primitives/Button";
+
+export function Header() {
+  const pathname = usePathname();
+  const { scrolled, hidden } = useHeaderState();
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const panelId = useId();
+
+  useEffect(() => {
+    setServicesOpen(false);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setServicesOpen(false);
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
+  }, [mobileOpen]);
+
+  return (
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-[var(--z-sticky)] transition-transform duration-500",
+          hidden && !servicesOpen && !mobileOpen && "-translate-y-full",
+        )}
+      >
+        <div
+          className={cn(
+            "transition-[background-color,border-color,backdrop-filter] duration-300",
+            scrolled || servicesOpen
+              ? "bg-[color-mix(in_oklch,var(--color-paper)_92%,transparent)] backdrop-blur-md border-b border-[var(--color-line)]"
+              : "bg-transparent border-b border-transparent",
+          )}
+        >
+          <div className="container-wide flex h-[72px] md:h-[80px] items-center justify-between gap-6">
+            <Link
+              href="/"
+              aria-label={`${site.name} — home`}
+              className="text-[var(--color-ink)]"
+            >
+              <Wordmark className="h-5 w-auto md:h-6" />
+            </Link>
+
+            <nav aria-label="Primary" className="hidden md:flex items-center gap-1">
+              {primaryNav.map((item) => {
+                const isServices = item.href === "/services";
+                const active =
+                  pathname === item.href ||
+                  (pathname?.startsWith(`${item.href}/`) && item.href !== "/");
+                if (isServices) {
+                  return (
+                    <button
+                      key={item.href}
+                      type="button"
+                      aria-expanded={servicesOpen}
+                      aria-controls={panelId}
+                      onClick={() => setServicesOpen((v) => !v)}
+                      className={cn(
+                        "kicker relative px-3 py-2 uppercase text-[color:var(--color-ink)] hover:text-[var(--color-ink)] transition-colors",
+                        (active || servicesOpen) &&
+                          "after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-px after:bg-[var(--color-gold)]",
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "kicker relative px-3 py-2 uppercase text-[color:var(--color-ink)] transition-colors",
+                      active &&
+                        "after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-px after:bg-[var(--color-gold)]",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <ButtonLink href="/contact" intent="primary" size="sm" className="hidden md:inline-flex">
+                Book a call
+              </ButtonLink>
+              <button
+                type="button"
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-nav"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                onClick={() => setMobileOpen((v) => !v)}
+                className="md:hidden inline-flex h-11 w-11 items-center justify-center border border-[var(--color-line-strong)] rounded-[var(--radius-sm)] text-[var(--color-ink)]"
+              >
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <MegaPanel id={panelId} open={servicesOpen} onClose={() => setServicesOpen(false)} />
+      </header>
+
+      <MobileSheet
+        open={mobileOpen}
+        pathname={pathname ?? "/"}
+        onClose={() => setMobileOpen(false)}
+      />
+
+      {/* Scroll-locked spacer */}
+      <div aria-hidden className="h-[72px] md:h-[80px]" />
+    </>
+  );
+}
+
+function MegaPanel({ id, open, onClose }: { id: string; open: boolean; onClose: () => void }) {
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            aria-hidden
+            className="fixed inset-0 top-[72px] md:top-[80px] z-[var(--z-panel)] bg-black/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.35 }}
+            onClick={onClose}
+          />
+          <motion.div
+            id={id}
+            role="dialog"
+            aria-label="Services"
+            className="absolute left-0 right-0 top-full z-[calc(var(--z-panel)+1)] bg-[var(--color-paper)] border-b border-[var(--color-line)]"
+            initial={{ y: -12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -8, opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="container-wide py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-10">
+              <div className="md:col-span-3">
+                <span className="kicker">Practices</span>
+                <h2 className="mt-4 font-[family-name:var(--font-display)] text-[var(--text-h3)] leading-[1.05] tracking-[-0.02em] text-[var(--color-ink)]">
+                  Eleven capabilities. One studio.
+                </h2>
+                <p className="mt-4 text-[var(--color-muted)] max-w-[36ch]">
+                  Choose a practice to see engagement models, deliverables, and what a first
+                  conversation looks like.
+                </p>
+                <Link
+                  href="/services"
+                  className="link-underline kicker uppercase mt-8 inline-block text-[var(--color-ink)]"
+                  onClick={onClose}
+                >
+                  See all services →
+                </Link>
+              </div>
+
+              <ul className="md:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+                {services.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/services/${s.slug}`}
+                      onClick={onClose}
+                      className="group flex items-baseline gap-4 py-3 border-b border-[var(--color-line)] hover:border-[var(--color-ink)] transition-colors"
+                    >
+                      <span className="num text-[var(--color-muted)] text-sm w-8">{s.index}</span>
+                      <span className="flex-1">
+                        <span className="block font-[family-name:var(--font-display)] text-[1.25rem] leading-tight tracking-[-0.02em] text-[var(--color-ink)] group-hover:text-[var(--color-ink)]">
+                          {s.title}
+                        </span>
+                        <span className="mt-1 block text-[color:var(--color-muted)] text-[0.9rem]">
+                          {s.kicker}
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="translate-x-0 group-hover:translate-x-1 transition-transform text-[var(--color-gold-2)]"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function MobileSheet({
+  open,
+  pathname,
+  onClose,
+}: {
+  open: boolean;
+  pathname: string;
+  onClose: () => void;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          id="mobile-nav"
+          role="dialog"
+          aria-label="Menu"
+          className="fixed inset-0 z-[var(--z-modal)] bg-[var(--color-ink)] text-[var(--color-paper)] flex flex-col"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduce ? 0 : 0.3 }}
+        >
+          <div className="container-wide flex h-[72px] items-center justify-between">
+            <span className="kicker text-[color:var(--color-muted-2)]">Menu</span>
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={onClose}
+              className="inline-flex h-11 w-11 items-center justify-center border border-[color-mix(in_oklch,var(--color-paper)_20%,transparent)] rounded-[var(--radius-sm)]"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <nav aria-label="Primary" className="flex-1 container-wide overflow-y-auto pb-12">
+            <ul className="mt-6 divide-y divide-[color-mix(in_oklch,var(--color-paper)_10%,transparent)]">
+              {primaryNav.map((item) => {
+                const active =
+                  pathname === item.href ||
+                  (pathname.startsWith(`${item.href}/`) && item.href !== "/");
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="flex items-center justify-between py-5 font-[family-name:var(--font-display)] text-[2rem] leading-none tracking-[-0.02em]"
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <span>{item.label}</span>
+                      <span aria-hidden className="text-[var(--color-gold)]">
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="mt-10">
+              <span className="kicker text-[color:var(--color-muted-2)]">Practices</span>
+              <ul className="mt-4 grid grid-cols-1 gap-2">
+                {services.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/services/${s.slug}`}
+                      className="flex items-baseline gap-4 py-2 text-[color-mix(in_oklch,var(--color-paper)_86%,transparent)] hover:text-[var(--color-paper)]"
+                    >
+                      <span className="num text-xs opacity-60 w-6">{s.index}</span>
+                      <span>{s.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-3">
+              <ButtonLink href="/contact" intent="onInkFilled" size="lg">
+                Book a call
+              </ButtonLink>
+              <a
+                href={`https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(site.contact.whatsappMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kicker uppercase inline-flex items-center gap-2 self-start text-[color-mix(in_oklch,var(--color-paper)_78%,transparent)] link-underline"
+              >
+                WhatsApp us instead →
+              </a>
+            </div>
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

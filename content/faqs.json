@@ -1,0 +1,53 @@
+[
+  {
+    "category": "Engagements",
+    "items": [
+      {
+        "q": "How do you scope a project?",
+        "a": "Every engagement begins with a paid discovery — usually one to two weeks — that ends in a fixed-fee proposal. Nothing binding until you see the shape of the work, the team, and the schedule."
+      },
+      {
+        "q": "What is the minimum engagement size?",
+        "a": "Most engagements start above $80,000 for fixed-fee projects, or $30,000 per month for retainers. Below that, our operating model does not earn its cost — and we will introduce you to teams we trust who work at that size."
+      },
+      {
+        "q": "Do you take equity in lieu of fees?",
+        "a": "Rarely, and only alongside cash. When we do, it is because we already know your team and believe in your position — not because you cannot afford our rate card."
+      }
+    ]
+  },
+  {
+    "category": "Team",
+    "items": [
+      {
+        "q": "Who will actually do the work?",
+        "a": "The people you meet in the pitch are the people who ship. We do not run a sales team that hands off to a delivery team. Our senior operators lead engagements — including the difficult conversations."
+      },
+      {
+        "q": "How large is the team we will work with?",
+        "a": "Between three and eight people, depending on the shape of the engagement. Small enough to move; large enough to survive a bus factor."
+      },
+      {
+        "q": "Do you work with in-house teams?",
+        "a": "Regularly. About 60% of engagements involve embedding alongside your engineers, designers, or marketers. We are quiet about handovers because the team we leave behind should not need us."
+      }
+    ]
+  },
+  {
+    "category": "Working with us",
+    "items": [
+      {
+        "q": "What time zone do you work in?",
+        "a": "We overlap four hours a day with any client time zone by design. Bengaluru, Dubai, London. Most engagements have a lead in the client's working hours."
+      },
+      {
+        "q": "What is your response time?",
+        "a": "One business day for new inquiries, four hours for active engagements. P0 incidents get a five-minute page and human within thirty."
+      },
+      {
+        "q": "How do you handle confidentiality?",
+        "a": "NDA is signed before the discovery call if you prefer. We name clients on this website only with their written permission — many of our best engagements will never appear here."
+      }
+    ]
+  }
+]
