@@ -1,0 +1,28 @@
+{
+  "name": "@edss/icons",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.tsx",
+      "default": "./src/index.tsx"
+    },
+    "./lucide": {
+      "types": "./src/lucide.ts",
+      "default": "./src/lucide.ts"
+    }
+  },
+  "dependencies": {
+    "lucide-react": "^0.469.0"
+  },
+  "peerDependencies": {
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@edss/config": "*",
+    "@types/react": "^19.0.2",
+    "typescript": "^5.7.2"
+  }
+}

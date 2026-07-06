@@ -42,8 +42,21 @@ export function Wordmark({ className, ...props }: SVGProps<SVGSVGElement>) {
 
 export function Monogram({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 40 40" role="img" aria-label="EDSS" className={className} {...props}>
-      <circle cx="20" cy="20" r="19" fill="none" stroke="currentColor" strokeWidth="1" />
+    <svg
+      viewBox="0 0 40 40"
+      role="img"
+      aria-label="EDSS"
+      className={className}
+      {...props}
+    >
+      <circle
+        cx="20"
+        cy="20"
+        r="19"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+      />
       <text
         x="20"
         y="27"
@@ -63,7 +76,13 @@ export function Monogram({ className, ...props }: SVGProps<SVGSVGElement>) {
 }
 
 /* Simple abstract client logos — grayscale, brand-neutral SVG marks */
-export function LogoMark({ label, className }: { label: string; className?: string }) {
+export function LogoMark({
+  label,
+  className,
+}: {
+  label: string;
+  className?: string;
+}) {
   return (
     <div
       className={className}

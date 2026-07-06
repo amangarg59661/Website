@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/config/site";
 import { footerNav } from "@/data/nav";
 import { Container } from "./Container";
-import { Wordmark } from "@/components/icons";
+import { Wordmark } from "@edss/icons";
 
 export function Footer() {
   const year = new Date().getFullYear();

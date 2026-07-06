@@ -10,7 +10,7 @@ import { primaryNav } from "@/data/nav";
 import { services } from "@/data/services";
 import { useHeaderState } from "@/lib/hooks";
 import { cn } from "@edss/utils/cn";
-import { Wordmark } from "@/components/icons";
+import { Wordmark } from "@edss/icons";
 import { ButtonLink } from "@edss/ui/button";
 
 export function Header() {

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@edss/design-system": "*",
+    "@edss/icons": "*",
     "@edss/ui": "*",
     "@edss/utils": "*",
     "@hookform/resolvers": "^3.10.0",
