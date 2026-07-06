@@ -11,7 +11,7 @@ import { services } from "@/data/services";
 import { useHeaderState } from "@/lib/hooks";
 import { cn } from "@edss/utils/cn";
 import { Wordmark } from "@/components/icons";
-import { ButtonLink } from "@/components/primitives/Button";
+import { ButtonLink } from "@edss/ui/button";
 
 export function Header() {
   const pathname = usePathname();

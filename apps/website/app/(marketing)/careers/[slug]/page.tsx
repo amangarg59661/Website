@@ -6,7 +6,7 @@ import { PageIntro } from "@/components/marketing/PageIntro";
 import { CtaBand } from "@/components/marketing/CtaBand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { ButtonLink } from "@/components/primitives/Button";
+import { ButtonLink } from "@edss/ui/button";
 import { formatDate } from "@edss/utils/format";
 import { site } from "@/config/site";
 

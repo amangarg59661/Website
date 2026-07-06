@@ -1,8 +1,15 @@
-import type { InputHTMLAttributes, TextareaHTMLAttributes, LabelHTMLAttributes } from "react";
+import type {
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  LabelHTMLAttributes,
+} from "react";
 import { forwardRef } from "react";
 import { cn } from "@edss/utils/cn";
 
-export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
+export function Label({
+  className,
+  ...props
+}: LabelHTMLAttributes<HTMLLabelElement>) {
   return (
     <label
       className={cn(
@@ -17,18 +24,24 @@ export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElem
 const fieldBase =
   "w-full bg-transparent text-[var(--color-ink)] placeholder:text-[color-mix(in_oklch,var(--color-muted)_88%,transparent)] border-0 border-b border-[var(--color-line-strong)] py-3 px-0 text-[var(--text-body-lg)] focus:outline-none focus:border-[var(--color-ink)] transition-colors";
 
-export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
-  ({ className, ...props }, ref) => (
-    <input ref={ref} className={cn(fieldBase, className)} {...props} />
-  ),
-);
+export const Input = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement>
+>(({ className, ...props }, ref) => (
+  <input ref={ref} className={cn(fieldBase, className)} {...props} />
+));
 Input.displayName = "Input";
 
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement>
 >(({ className, ...props }, ref) => (
-  <textarea ref={ref} rows={4} className={cn(fieldBase, "resize-none", className)} {...props} />
+  <textarea
+    ref={ref}
+    rows={4}
+    className={cn(fieldBase, "resize-none", className)}
+    {...props}
+  />
 ));
 Textarea.displayName = "Textarea";
 

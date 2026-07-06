@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { contactSchema, type ContactPayload } from "@/lib/contact/schema";
-import { Button } from "@/components/primitives/Button";
-import { FieldError, FieldHint, Input, Label, Textarea } from "@/components/primitives/Form";
+import { Button } from "@edss/ui/button";
+import { FieldError, FieldHint, Input, Label, Textarea } from "@edss/ui/form";
 
 type Status = { kind: "idle" | "submitting" | "ok" | "error"; message?: string };
 

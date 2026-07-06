@@ -1,6 +1,6 @@
 import { site } from "@/config/site";
 import { Container } from "@/components/layout/Container";
-import { ButtonLink } from "@/components/primitives/Button";
+import { ButtonLink } from "@edss/ui/button";
 import { Reveal } from "@/components/motion/Reveal";
 
 export function CtaBand({

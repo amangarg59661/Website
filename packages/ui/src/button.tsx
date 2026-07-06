@@ -29,13 +29,24 @@ const button = cva(
   },
 );
 
-type Base = VariantProps<typeof button> & { withArrow?: boolean; children: ReactNode };
+type Base = VariantProps<typeof button> & {
+  withArrow?: boolean;
+  children: ReactNode;
+};
 type ButtonProps = Base & ButtonHTMLAttributes<HTMLButtonElement>;
-type LinkProps = Base & { href: string; external?: boolean; className?: string };
+type LinkProps = Base & {
+  href: string;
+  external?: boolean;
+  className?: string;
+};
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, intent, size, withArrow, children, ...props }, ref) => (
-    <button ref={ref} className={cn(button({ intent, size }), className)} {...props}>
+    <button
+      ref={ref}
+      className={cn(button({ intent, size }), className)}
+      {...props}
+    >
       {children}
       {withArrow && <ArrowUpRight aria-hidden className="h-4 w-4" />}
     </button>

@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 import { site } from "@/config/site";
 import { Container } from "@/components/layout/Container";
-import { ButtonLink } from "@/components/primitives/Button";
+import { ButtonLink } from "@edss/ui/button";
 import { RevealLines } from "@/components/motion/Reveal";
 import { PointerParallax } from "@/components/motion/Parallax";
 import { MagneticCta } from "@/components/motion/MagneticCta";
