@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { display, sans, mono } from "@edss/design-system/fonts";
+import { PostHogProvider, PageviewTracker } from "@edss/analytics/client";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 import { defaultMetadata } from "@/config/seo";
@@ -31,10 +33,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <SmoothScroll />
-        {children}
-        <JsonLd data={organizationLd()} />
-        <Analytics />
+        <PostHogProvider>
+          <Suspense fallback={null}>
+            <PageviewTracker />
+          </Suspense>
+          <SmoothScroll />
+          {children}
+          <JsonLd data={organizationLd()} />
+          <Analytics />
+        </PostHogProvider>
       </body>
     </html>
   );
