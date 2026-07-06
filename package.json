@@ -1,8 +1,12 @@
 {
-  "name": "edss-web",
-  "version": "0.1.0",
+  "name": "edss-monorepo",
+  "version": "0.0.0",
   "private": true,
-  "description": "Elite Digital Solutions Studio — marketing website",
+  "description": "Elite Digital Solutions Studio — monorepo (website + dashboard + shared packages)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,6 +16,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,mdx,css,json}\"",
     "analyze": "ANALYZE=true next build",
     "check:bundle": "node scripts/check-bundle.mjs",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
     "prepare": "husky"
   },
   "dependencies": {
@@ -43,7 +49,9 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@edss/config": "*",
     "@next/bundle-analyzer": "^15.1.3",
+    "@playwright/test": "^1.49.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.2",
@@ -56,6 +64,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^4.0.0",
+    "turbo": "^2.3.0",
     "typescript": "^5.7.2"
   },
   "lint-staged": {
@@ -65,5 +74,6 @@
   },
   "engines": {
     "node": ">=20.11"
-  }
+  },
+  "packageManager": "npm@10.0.0"
 }

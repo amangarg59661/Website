@@ -45,3 +45,8 @@ next-env.d.ts
 # scratchpad (baselines, ephemeral artifacts)
 /scratchpad
 
+# playwright
+/test-results
+/playwright-report
+/playwright/.cache
+
