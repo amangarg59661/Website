@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@edss/design-system": "*",
+    "@edss/hooks": "*",
     "@edss/icons": "*",
     "@edss/ui": "*",
     "@edss/utils": "*",

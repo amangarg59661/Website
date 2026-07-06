@@ -1,0 +1,33 @@
+{
+  "name": "@edss/hooks",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./useMediaQuery": {
+      "types": "./src/useMediaQuery.ts",
+      "default": "./src/useMediaQuery.ts"
+    },
+    "./useReducedMotion": {
+      "types": "./src/useReducedMotion.ts",
+      "default": "./src/useReducedMotion.ts"
+    },
+    "./useInViewOnce": {
+      "types": "./src/useInViewOnce.ts",
+      "default": "./src/useInViewOnce.ts"
+    }
+  },
+  "peerDependencies": {
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@edss/config": "*",
+    "@types/react": "^19.0.2",
+    "typescript": "^5.7.2"
+  }
+}
