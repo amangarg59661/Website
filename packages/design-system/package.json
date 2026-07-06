@@ -1,0 +1,34 @@
+{
+  "name": "@edss/design-system",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./fonts": {
+      "types": "./src/fonts.ts",
+      "default": "./src/fonts.ts"
+    },
+    "./motion": {
+      "types": "./src/motion.ts",
+      "default": "./src/motion.ts"
+    },
+    "./styles/tokens.css": "./src/styles/tokens.css",
+    "./styles/tokens-light.css": "./src/styles/tokens-light.css",
+    "./styles/tokens-dark.css": "./src/styles/tokens-dark.css"
+  },
+  "peerDependencies": {
+    "next": "^15",
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@edss/config": "*",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,31 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, IBM_Plex_Sans, Geist_Mono } from "next/font/google";
+import { display, sans, mono } from "@edss/design-system/fonts";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 import { defaultMetadata } from "@/config/seo";
 import { JsonLd, organizationLd } from "@/lib/seo/jsonld";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
-
-const display = Fraunces({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-display-provider",
-  axes: ["opsz", "SOFT"],
-});
-
-const sans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans-provider",
-  weight: ["400", "500", "600"],
-});
-
-const mono = Geist_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-mono-provider",
-  weight: ["400", "500"],
-});
 
 export const metadata: Metadata = defaultMetadata;
 

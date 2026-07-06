@@ -1,0 +1,4 @@
+/* Light-mode surface overrides. Currently no additional overrides required —
+   base tokens in tokens.css assume the light "paper" palette. This file is
+   imported by both apps so the token-import chain has a consistent shape and
+   future light-mode tweaks land here without touching consumers. */
