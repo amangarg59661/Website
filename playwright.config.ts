@@ -13,7 +13,8 @@ export default defineConfig({
     screenshot: "off",
   },
   webServer: {
-    command: "npm run build && npm run start",
+    command:
+      "npm --workspace @edss/website run build && npm --workspace @edss/website run start",
     url: "http://localhost:3000",
     reuseExistingServer: false,
     timeout: 300_000,

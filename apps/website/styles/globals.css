@@ -1,0 +1,396 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — Executive Minimalist                               */
+/* Charcoal-anchored surfaces + warm gold accent (≤10% of surface).   */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* Colors (OKLCH) */
+  --color-ink: oklch(0.145 0.005 250);
+  --color-ink-2: oklch(0.22 0.005 250);
+  --color-ink-3: oklch(0.32 0.005 250);
+  --color-paper: oklch(0.985 0.003 90);
+  --color-stone: oklch(0.965 0.004 90);
+  --color-stone-2: oklch(0.93 0.004 90);
+  --color-muted: oklch(0.55 0.005 250);
+  --color-muted-2: oklch(0.72 0.005 250);
+  --color-line: oklch(0.9 0.004 90);
+  --color-line-strong: oklch(0.82 0.005 90);
+  --color-gold: oklch(0.78 0.13 85);
+  --color-gold-2: oklch(0.7 0.15 75);
+  --color-gold-ink: oklch(0.35 0.09 75);
+  --color-danger: oklch(0.55 0.19 25);
+  --color-success: oklch(0.62 0.15 155);
+
+  /* Fonts — bound to next/font variables provided by app/layout.tsx */
+  --font-display: var(--font-display-provider), "Fraunces", "Times New Roman", ui-serif, serif;
+  --font-sans:
+    var(--font-sans-provider), "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-mono-provider), "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale (clamp — desktop max ≤6rem, floor for mobile) */
+  --text-eyebrow: clamp(0.7rem, 0.68rem + 0.1vw, 0.75rem);
+  --text-body: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
+  --text-body-lg: clamp(1.05rem, 1rem + 0.25vw, 1.125rem);
+  --text-lede: clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --text-h4: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --text-h3: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
+  --text-h2: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  --text-h1: clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+  --text-display: clamp(3rem, 2rem + 4.5vw, 6rem);
+
+  /* Spacing */
+  --spacing-gutter: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  --spacing-margin: clamp(1.25rem, 0.75rem + 2vw, 4rem);
+  --spacing-stack: clamp(3.5rem, 2rem + 4vw, 7.5rem);
+  --spacing-stack-lg: clamp(5rem, 3rem + 6vw, 10rem);
+  --container-max: 1280px;
+  --container-max-wide: 1440px;
+  --container-max-reading: 68ch;
+
+  /* Radii */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+
+  /* Shadows — diffused ambient */
+  --shadow-sm: 0 1px 2px rgba(23, 23, 23, 0.04);
+  --shadow-md: 0 8px 24px rgba(23, 23, 23, 0.05);
+  --shadow-lg: 0 24px 60px -20px rgba(23, 23, 23, 0.12);
+  --shadow-xl: 0 40px 100px -30px rgba(23, 23, 23, 0.18);
+
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+  --dur-slow: 640ms;
+  --dur-cinematic: 1200ms;
+
+  /* Z-index scale (semantic) */
+  --z-below: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-panel: 40;
+  --z-modal-backdrop: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+  --z-tooltip: 80;
+  --z-cursor: 90;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  h4 {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  button {
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities specific to the brand                                     */
+/* ------------------------------------------------------------------ */
+
+@layer utilities {
+  .container-edss {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--spacing-margin);
+  }
+
+  .container-wide {
+    max-width: var(--container-max-wide);
+    margin-inline: auto;
+    padding-inline: var(--spacing-margin);
+  }
+
+  .container-reading {
+    max-width: var(--container-max-reading);
+    margin-inline: auto;
+  }
+
+  .stack {
+    padding-block: var(--spacing-stack);
+  }
+
+  .stack-lg {
+    padding-block: var(--spacing-stack-lg);
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--color-line);
+    border: 0;
+    margin: 0;
+  }
+
+  .rule-strong {
+    height: 1px;
+    background: var(--color-line-strong);
+    border: 0;
+    margin: 0;
+  }
+
+  .hairline {
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 300;
+  }
+
+  .h1 {
+    font-size: var(--text-h1);
+  }
+  .h2 {
+    font-size: var(--text-h2);
+  }
+  .h3 {
+    font-size: var(--text-h3);
+  }
+  .h4 {
+    font-size: var(--text-h4);
+  }
+  .lede {
+    font-size: var(--text-lede);
+    line-height: 1.5;
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum", "zero";
+    letter-spacing: -0.02em;
+  }
+
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-out-quart);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.09 0 0 0 0 0.09 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+  }
+
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 4rem;
+    flex-shrink: 0;
+    animation: marquee 42s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+
+  @keyframes accordion-open {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+  }
+  @keyframes accordion-closed {
+    from {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+  .animate-accordion-open {
+    animation: accordion-open 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .animate-accordion-closed {
+    animation: accordion-closed 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Dark surfaces (used on hero, footer, portfolio pin)                 */
+/* ------------------------------------------------------------------ */
+
+.on-ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.on-ink h1,
+.on-ink h2,
+.on-ink h3,
+.on-ink h4 {
+  color: var(--color-paper);
+}
+.on-ink .kicker {
+  color: var(--color-muted-2);
+}
+.on-ink .lede {
+  color: color-mix(in oklch, var(--color-paper) 78%, transparent);
+}
+.on-ink .rule {
+  background: color-mix(in oklch, var(--color-paper) 12%, transparent);
+}
+.on-ink :focus-visible {
+  outline-color: var(--color-gold);
+}

@@ -1,17 +1,8 @@
 {
-  "extends": "@edss/config/tsconfig/next.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/content/*": ["./content/*"],
-      "@/data/*": ["./data/*"],
-      "@/config/*": ["./config/*"],
-      "@/styles/*": ["./styles/*"]
-    }
+    "noEmit": true,
+    "skipLibCheck": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "packages/**", "apps/**"]
+  "include": [],
+  "exclude": ["node_modules", "apps", "packages", ".next", ".turbo"]
 }
