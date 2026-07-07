@@ -9,8 +9,9 @@ import type {
   LoginInput,
   TwoFactorInput,
   ForgotPasswordInput,
-  ResetPasswordInput,
 } from "@edss/validation/auth";
+
+type ResetPasswordSubmit = { token: string; new_password: string };
 import { useAuthStore } from "./store";
 
 function readCsrfCookie(): string | null {
@@ -141,7 +142,7 @@ export async function requestPasswordReset(
 }
 
 export async function confirmPasswordReset(
-  input: ResetPasswordInput,
+  input: ResetPasswordSubmit,
 ): Promise<void> {
   const res = await fetch("/api/auth/reset-password", {
     method: "POST",

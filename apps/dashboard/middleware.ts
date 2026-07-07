@@ -162,10 +162,10 @@ export async function middleware(req: NextRequest) {
       return applyHeaders(NextResponse.redirect(url), nonce);
     }
     if (hasRt && pathname === "/login") {
-      return applyHeaders(redirect(req, "/overview"), nonce);
+      return applyHeaders(redirect(req, "/dashboard"), nonce);
     }
     if (pathname === "/") {
-      return applyHeaders(redirect(req, hasRt ? "/overview" : "/login"), nonce);
+      return applyHeaders(redirect(req, hasRt ? "/dashboard" : "/login"), nonce);
     }
   }
 
