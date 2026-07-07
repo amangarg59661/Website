@@ -1,0 +1,32 @@
+{
+  "name": "@edss/validation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./auth": {
+      "types": "./src/auth.ts",
+      "default": "./src/auth.ts"
+    },
+    "./user": {
+      "types": "./src/user.ts",
+      "default": "./src/user.ts"
+    },
+    "./api": {
+      "types": "./src/api.ts",
+      "default": "./src/api.ts"
+    }
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@edss/config": "*",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "extends": "@edss/config/tsconfig/base.json",
+  "include": ["src"]
+}
