@@ -55,4 +55,4 @@ export type ApiErrorBody = {
   details?: Record<string, unknown>;
 };
 
-export * from "./api.js";
+export * from "./api";

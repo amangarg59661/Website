@@ -5,8 +5,8 @@ import {
   type UseMutationOptions,
 } from "@tanstack/react-query";
 import type { ZodTypeAny, z } from "zod";
-import { apiFetch, type ApiFetchOptions } from "./client.js";
-import { ApiError } from "./error.js";
+import { apiFetch, type ApiFetchOptions } from "./client";
+import { ApiError } from "./error";
 
 export function useApiQuery<TSchema extends ZodTypeAny>(
   key: readonly unknown[],

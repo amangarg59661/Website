@@ -11,7 +11,7 @@ import type {
   ForgotPasswordInput,
   ResetPasswordInput,
 } from "@edss/validation/auth";
-import { useAuthStore } from "./store.js";
+import { useAuthStore } from "./store";
 
 function readCsrfCookie(): string | null {
   if (typeof document === "undefined") return null;

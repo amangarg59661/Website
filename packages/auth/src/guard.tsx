@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useHasPermission } from "./hooks.js";
+import { useHasPermission } from "./hooks";
 
 export function PermissionGate({
   permission,

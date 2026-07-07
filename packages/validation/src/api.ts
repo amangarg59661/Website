@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userSchema, permissionSchema } from "./user.js";
+import { userSchema, permissionSchema } from "./user";
 
 export const apiErrorSchema = z.object({
   code: z.enum([

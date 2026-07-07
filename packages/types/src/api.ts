@@ -1,4 +1,4 @@
-import type { User, Permission, Session } from "./index.js";
+import type { User, Permission, Session } from "./index";
 
 export type LoginRequest = {
   email: string;

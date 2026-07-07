@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthStore } from "./store.js";
+import { useAuthStore } from "./store";
 
 export function useAuth() {
   return useAuthStore();

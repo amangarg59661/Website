@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useAuthStore } from "./store.js";
+import { useAuthStore } from "./store";
 
 const IDLE_MS = 30 * 60 * 1000;
 const WARN_MS = 25 * 60 * 1000;

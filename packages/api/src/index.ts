@@ -3,6 +3,6 @@ export {
   initApiClient,
   type ApiClientConfig,
   type ApiFetchOptions,
-} from "./client.js";
-export { ApiError, errorCodeToMessage } from "./error.js";
-export { useApiQuery, useApiMutation, makeMutationFn } from "./queries.js";
+} from "./client";
+export { ApiError, errorCodeToMessage } from "./error";
+export { useApiQuery, useApiMutation, makeMutationFn } from "./queries";

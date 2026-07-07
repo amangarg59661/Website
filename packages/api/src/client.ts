@@ -1,6 +1,6 @@
 import type { ZodTypeAny, z } from "zod";
 import { apiErrorSchema } from "@edss/validation/api";
-import { ApiError } from "./error.js";
+import { ApiError } from "./error";
 
 export type ApiClientConfig = {
   baseUrl: string;
