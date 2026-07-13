@@ -175,6 +175,101 @@ export const mfaMethodListSchema = z.object({
   methods: z.array(mfaMethodSchema),
 });
 
+// ------------------------------------------------------------------
+// Careers — staff-side JobPosting + JobApplication (C-5).
+// Backend records use camelCase Java fields under global Jackson
+// SNAKE_CASE → wire fields are snake_case here.
+// ------------------------------------------------------------------
+export const jobPostingStatusSchema = z.enum([
+  "draft",
+  "published",
+  "archived",
+]);
+export const jobApplicationStatusSchema = z.enum([
+  "new",
+  "reviewing",
+  "contacted",
+  "rejected",
+  "hired",
+]);
+export const jobPostingSchema = z.object({
+  id: z.string().uuid(),
+  slug: z.string(),
+  title: z.string(),
+  team: z.string(),
+  location: z.string(),
+  employment_type: z.string(),
+  commitment: z.string().nullable().optional(),
+  summary: z.string(),
+  responsibilities: z.array(z.string()).default([]),
+  requirements: z.array(z.string()).default([]),
+  salary_range_min: z.number().nullable().optional(),
+  salary_range_max: z.number().nullable().optional(),
+  currency: z.string().nullable().optional(),
+  status: jobPostingStatusSchema,
+  posted_at: z.string().nullable().optional(),
+  published_at: z.string().nullable().optional(),
+  archived_at: z.string().nullable().optional(),
+  created_at: isoDateSchema.optional(),
+  updated_at: isoDateSchema.optional(),
+});
+export const jobPostingListSchema = z.array(jobPostingSchema);
+
+export const jobPostingCreateSchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .max(120)
+    .regex(
+      /^[a-z0-9](-?[a-z0-9])*$/u,
+      "Slug must be lower-case alphanumerics separated by hyphens.",
+    ),
+  title: z.string().min(1).max(200),
+  team: z.string().min(1).max(80),
+  location: z.string().min(1).max(200),
+  employmentType: z.string().min(1).max(40),
+  commitment: z.string().max(60).optional(),
+  summary: z.string().min(1),
+  responsibilities: z.array(z.string().min(1)).default([]),
+  requirements: z.array(z.string().min(1)).default([]),
+  salaryRangeMin: z.number().int().nonnegative().optional(),
+  salaryRangeMax: z.number().int().nonnegative().optional(),
+  currency: z
+    .string()
+    .regex(/^[A-Z]{3}$/u, "Currency must be an ISO-4217 code.")
+    .optional(),
+});
+export type JobPostingCreateInput = z.infer<typeof jobPostingCreateSchema>;
+
+export const jobPostingUpdateSchema = jobPostingCreateSchema
+  .partial()
+  .omit({ slug: true });
+export type JobPostingUpdateInput = z.infer<typeof jobPostingUpdateSchema>;
+
+export const jobApplicationSchema = z.object({
+  id: z.string().uuid(),
+  job_posting_id: z.string().uuid(),
+  applicant_name: z.string(),
+  applicant_email: z.string(),
+  applicant_phone: z.string().nullable().optional(),
+  resume_url: z.string().nullable().optional(),
+  cover_letter: z.string(),
+  status: jobApplicationStatusSchema,
+  reviewer_note: z.string().nullable().optional(),
+  submitted_at: isoDateSchema,
+  reviewed_at: isoDateSchema.nullable().optional(),
+  reviewed_by_user_id: z.string().uuid().nullable().optional(),
+});
+export const jobApplicationListSchema = z.array(jobApplicationSchema);
+
+export const jobApplicationReviewSchema = z.object({
+  status: jobApplicationStatusSchema,
+  note: z.string().max(4000).optional(),
+});
+export type JobApplicationReviewInput = z.infer<
+  typeof jobApplicationReviewSchema
+>;
+
 // Inferred TS types — consumers import these instead of writing their own.
 export type Notification = z.infer<typeof notificationSchema>;
 export type Project = z.infer<typeof projectSchema>;
@@ -184,3 +279,7 @@ export type FileRecord = z.infer<typeof fileSchema>;
 export type SessionRow = z.infer<typeof sessionSchema>;
 export type TrustedDeviceRow = z.infer<typeof trustedDeviceSchema>;
 export type MfaMethod = z.infer<typeof mfaMethodSchema>;
+export type JobPosting = z.infer<typeof jobPostingSchema>;
+export type JobPostingStatus = z.infer<typeof jobPostingStatusSchema>;
+export type JobApplication = z.infer<typeof jobApplicationSchema>;
+export type JobApplicationStatus = z.infer<typeof jobApplicationStatusSchema>;

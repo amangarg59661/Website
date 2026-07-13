@@ -15,6 +15,7 @@ import {
   Users,
   ScrollText,
   FileBarChart,
+  Briefcase,
 } from "lucide-react";
 import { useAuthStore, useHasPermission } from "@edss/auth";
 import { cn } from "@edss/utils/cn";
@@ -96,6 +97,12 @@ function buildStaffNav(prefix: string): Array<{ heading: string; items: Item[] }
       heading: "Admin",
       items: [
         { href: `${prefix}/users`, label: "Users", icon: Users, permission: "users:read" },
+        {
+          href: `${prefix}/careers`,
+          label: "Careers",
+          icon: Briefcase,
+          permission: "careers:read",
+        },
         {
           href: `${prefix}/reports`,
           label: "Reports",

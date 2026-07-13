@@ -76,6 +76,20 @@ export const paletteRoutes: PaletteRoute[] = [
     permission: "users:read",
   },
   {
+    id: "s.careers",
+    group: "staff",
+    title: "Staff · Careers",
+    href: "/staff/careers",
+    permission: "careers:read",
+  },
+  {
+    id: "s.careers.new",
+    group: "staff",
+    title: "Staff · Careers — new draft",
+    href: "/staff/careers/new",
+    permission: "careers:write",
+  },
+  {
     id: "s.reports",
     group: "staff",
     title: "Staff · Reports",
