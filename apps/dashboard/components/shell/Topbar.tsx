@@ -8,6 +8,7 @@ import { UserMenu } from "./UserMenu";
 import { CommandPalette } from "@/components/palette/CommandPalette";
 import { NotificationsDrawer } from "./NotificationsDrawer";
 import { SidebarNavBody } from "./Sidebar";
+import { useRealtimeNotifications } from "@/components/notifications/notifications-store";
 
 export function Topbar() {
   const hasBoth = useAuthStore((s) => s.hasBothRoles);
@@ -16,6 +17,7 @@ export function Topbar() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const unread = useRealtimeNotifications((s) => s.unreadCount);
 
   return (
     <header className="sticky top-0 z-[var(--z-sticky)] flex h-14 items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-paper)] px-4">
@@ -74,10 +76,18 @@ export function Topbar() {
         <button
           type="button"
           onClick={() => setNotifOpen(true)}
-          aria-label="Open notifications"
-          className="rounded-[var(--radius-sm)] p-2 hover:bg-[var(--color-stone)]"
+          aria-label={unread > 0 ? `Open notifications (${unread} unread)` : "Open notifications"}
+          className="relative rounded-[var(--radius-sm)] p-2 hover:bg-[var(--color-stone)]"
         >
           <Bell className="h-4 w-4" />
+          {unread > 0 && (
+            <span
+              aria-hidden="true"
+              className="absolute top-1 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--color-gold)] px-1 text-[10px] font-medium text-[var(--color-ink)]"
+            >
+              {unread > 9 ? "9+" : unread}
+            </span>
+          )}
         </button>
         <UserMenu />
       </div>

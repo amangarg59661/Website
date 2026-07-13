@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/shell/Sidebar";
 import { Topbar } from "@/components/shell/Topbar";
 import { SessionIdleWatcher } from "@/components/auth/SessionIdleWatcher";
 import { ShellGate } from "@/components/auth/ShellGate";
+import { NotificationsSocket } from "@/components/notifications/NotificationsSocket";
 
 export default function StaffLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
       <div className="min-h-dvh">
         <Topbar />
         <SessionIdleWatcher />
+        <NotificationsSocket />
         <div className="flex">
           <Sidebar />
           <main id="dashboard-main" tabIndex={-1} className="container-app flex-1 py-10">
