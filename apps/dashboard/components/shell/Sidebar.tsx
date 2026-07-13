@@ -144,15 +144,29 @@ function NavItem({ item }: { item: Item }) {
   );
 }
 
+/**
+ * U-27: the fixed 240px sidebar made the dashboard unusable below ~640px
+ * (sidebar ate 64% of a 375px viewport). Now hidden below `md:` and paired
+ * with `<MobileNavSheet>` in the Topbar. Shared inner render so the sheet
+ * and the desktop rail stay in sync — one nav source of truth.
+ */
 export function Sidebar() {
+  return (
+    <nav
+      aria-label="Primary"
+      className="hidden h-full w-[240px] flex-col gap-6 border-r border-[var(--color-line)] px-4 py-6 md:flex"
+    >
+      <SidebarNavBody />
+    </nav>
+  );
+}
+
+export function SidebarNavBody() {
   const group = useAuthStore((s) => s.activeRoleGroup);
   const prefix = group === "staff" ? "/staff" : "/client";
   const nav = group === "staff" ? buildStaffNav(prefix) : buildClientNav(prefix);
   return (
-    <nav
-      aria-label="Primary"
-      className="flex h-full w-[240px] flex-col gap-6 border-r border-[var(--color-line)] px-4 py-6"
-    >
+    <>
       {nav.map((section) => (
         <div key={section.heading}>
           <p className="kicker mb-2 px-2.5">{section.heading}</p>
@@ -163,6 +177,6 @@ export function Sidebar() {
           </div>
         </div>
       ))}
-    </nav>
+    </>
   );
 }

@@ -24,10 +24,14 @@ export function CommandPalette({
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        onOpenChange(true);
-      }
+      if (!((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k")) return;
+      // U-17: never hijack Cmd/Ctrl+K while the user is typing in an input,
+      // textarea, or contenteditable region. Login / 2FA / reset forms all
+      // rely on the browser's default behaviour there.
+      const target = e.target as HTMLElement | null;
+      if (target && target.matches("input, textarea, select, [contenteditable=true]")) return;
+      e.preventDefault();
+      onOpenChange(true);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

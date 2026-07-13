@@ -13,7 +13,12 @@
   --color-paper: oklch(0.985 0.003 90);
   --color-stone: oklch(0.965 0.004 90);
   --color-stone-2: oklch(0.93 0.004 90);
-  --color-muted: oklch(0.55 0.005 250);
+  /* U-23: was 0.55 which computes to ~4.3:1 on paper — one notch below AA
+     4.5:1. Dropped to 0.5 for a comfortable 4.7:1 across every kicker,
+     lede and hint. --color-muted-strong is a new step for interactive
+     muted text that still needs to communicate action affordance. */
+  --color-muted: oklch(0.5 0.005 250);
+  --color-muted-strong: oklch(0.42 0.005 250);
   --color-muted-2: oklch(0.72 0.005 250);
   --color-line: oklch(0.9 0.004 90);
   --color-line-strong: oklch(0.82 0.005 90);

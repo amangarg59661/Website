@@ -20,18 +20,38 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@edss/ui/dropdown-menu";
-import { useUser } from "@edss/auth";
+import { useUser, useAuthStore } from "@edss/auth";
 import { logout } from "@edss/auth/client";
 import { useRouter } from "next/navigation";
 
+/**
+ * U-01: Profile + Settings link targets derive from the user's current
+ * shell (client vs staff). Client shell has profile + settings; staff
+ * shell has settings only.
+ * U-19: DropdownMenuTrigger carries an aria-label so screen readers
+ * announce "Account menu for {name}" instead of just the initial.
+ */
 export function UserMenu() {
   const user = useUser();
+  const activeRoleGroup = useAuthStore((s) => s.activeRoleGroup);
+  const primaryRole = useAuthStore((s) => s.primaryRole);
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const shell = activeRoleGroup ?? primaryRole ?? "client";
+  const profileHref = shell === "staff" ? null : `/client/profile`;
+  const settingsHref = `/${shell}/settings`;
+  const triggerLabel = user?.name
+    ? `Account menu for ${user.name}`
+    : user
+      ? "Account menu"
+      : "Account menu — loading";
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-line-strong)] text-xs">
-        {user?.name?.charAt(0) ?? "?"}
+      <DropdownMenuTrigger
+        aria-label={triggerLabel}
+        className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-line-strong)] text-xs"
+      >
+        <span aria-hidden="true">{user?.name?.charAt(0) ?? "?"}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>
@@ -39,13 +59,15 @@ export function UserMenu() {
           <div className="text-xs text-[var(--color-muted)]">{user?.email}</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {profileHref && (
+          <DropdownMenuItem asChild>
+            <Link href={profileHref}>
+              <UserIcon className="h-4 w-4" /> Profile
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
-          <Link href="/profile">
-            <UserIcon className="h-4 w-4" /> Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link href={settingsHref}>
             <SettingsIcon className="h-4 w-4" /> Settings
           </Link>
         </DropdownMenuItem>

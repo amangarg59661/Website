@@ -5,8 +5,12 @@
   --color-paper: oklch(0.15 0.005 250);
   --color-stone: oklch(0.2 0.005 250);
   --color-stone-2: oklch(0.25 0.005 250);
-  --color-muted: oklch(0.68 0.005 250);
-  --color-muted-2: oklch(0.55 0.005 250);
+  /* U-24: was 0.55 on dark paper (0.15) at ~3.4:1 — fails AA for small
+     text. Raised to 0.7 for 5.1:1. --color-muted-strong parallels the
+     light-mode step for interactive muted text. */
+  --color-muted: oklch(0.72 0.005 250);
+  --color-muted-strong: oklch(0.82 0.005 250);
+  --color-muted-2: oklch(0.7 0.005 250);
   --color-line: oklch(0.3 0.004 250);
   --color-line-strong: oklch(0.4 0.005 250);
   --color-gold: oklch(0.82 0.13 85);

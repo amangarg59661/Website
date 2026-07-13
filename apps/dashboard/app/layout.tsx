@@ -39,6 +39,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: PRE_HYDRATION_SCRIPT }} />
       </head>
       <body>
+        {/* U-16: skip-link. Keyboard users bypass the sticky topbar +
+            240px sidebar (15+ tab stops) and land directly at page content. */}
+        <a
+          href="#dashboard-main"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-[var(--radius-sm)] focus-visible:bg-[var(--color-ink)] focus-visible:px-4 focus-visible:py-2 focus-visible:text-[var(--color-paper)]"
+        >
+          Skip to content
+        </a>
         <ThemeProvider>
           <QueryProvider>
             <MSWProvider>

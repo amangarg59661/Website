@@ -20,7 +20,9 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         <SessionIdleWatcher />
         <div className="flex">
           <Sidebar />
-          <div className="container-app flex-1 py-10">{children}</div>
+          <main id="dashboard-main" tabIndex={-1} className="container-app flex-1 py-10">
+            {children}
+          </main>
         </div>
       </div>
     </ShellGate>
