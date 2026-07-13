@@ -15,7 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,mdx,css,json}\"",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "prepare": "husky"
+"prepare": "husky || true"
   },
   "devDependencies": {
     "@edss/config": "*",
