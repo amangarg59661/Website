@@ -50,3 +50,7 @@ next-env.d.ts
 /playwright-report
 /playwright/.cache
 
+# MSW worker — regenerated on demand in dev via `msw init`. Never shipped
+# to prod; committing the worker widens the accidental-enable blast radius.
+apps/dashboard/public/mockServiceWorker.js
+

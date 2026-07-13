@@ -98,6 +98,15 @@ function redirect(req: NextRequest, path: string): NextResponse {
 }
 
 export async function middleware(req: NextRequest) {
+  // S-01 defense-in-depth for CVE-2025-29927. Next 15.2.3+ patches the
+  // middleware-bypass, but we reject requests carrying the marker header
+  // even on patched builds so any future variant of the same class is
+  // closed at the edge. Legitimate Next internal subrequests never reach
+  // the middleware in production.
+  if (req.headers.has("x-middleware-subrequest")) {
+    return new NextResponse(null, { status: 403 });
+  }
+
   const nonce = crypto.randomUUID().replace(/-/g, "");
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-nonce", nonce);

@@ -10,6 +10,27 @@ import { Input } from "@edss/ui/input";
 import { Label } from "@edss/ui/label";
 import { RememberMeCheckbox } from "./RememberMeCheckbox";
 
+/**
+ * S-02: constrain the post-login redirect target to same-origin relative
+ * paths. Reject anything starting with `//` (protocol-relative), containing
+ * `://`, or not starting with a single leading slash. Backslashes on Windows
+ * paths (`\\evil.example`) are also rejected — some routers coerce those
+ * back into `//`.
+ */
+function safeNext(raw: string | null): string {
+  if (!raw) return "/dashboard";
+  if (
+    !raw.startsWith("/") ||
+    raw.startsWith("//") ||
+    raw.startsWith("/\\") ||
+    raw.includes("://") ||
+    raw.includes("\\")
+  ) {
+    return "/dashboard";
+  }
+  return raw;
+}
+
 export function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
@@ -38,8 +59,7 @@ export function LoginForm() {
           );
           return;
         }
-        const next = search.get("next") ?? "/dashboard";
-        router.push(next);
+        router.push(safeNext(search.get("next")));
       } catch (err) {
         setFormError(err instanceof Error ? err.message : "Login failed.");
       }
