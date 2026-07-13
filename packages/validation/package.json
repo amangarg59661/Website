@@ -20,6 +20,10 @@
     "./api": {
       "types": "./src/api.ts",
       "default": "./src/api.ts"
+    },
+    "./resources": {
+      "types": "./src/resources.ts",
+      "default": "./src/resources.ts"
     }
   },
   "dependencies": {
