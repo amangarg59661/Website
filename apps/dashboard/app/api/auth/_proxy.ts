@@ -40,6 +40,26 @@ export function setAuthCookies(res: NextResponse, refreshToken: string): void {
     path: "/api/auth",
     maxAge: 30 * 24 * 3600,
   });
+  // S-06: rotate the CSRF token on every privilege transition so a stale
+  // pre-login token can never be replayed post-login. The double-submit
+  // check is only meaningful when both sides rotate together.
+  rotateCsrfCookie(res);
+}
+
+export function rotateCsrfCookie(res: NextResponse): void {
+  const arr = new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  const token = btoa(String.fromCharCode(...arr))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/u, "");
+  res.cookies.set("csrf", token, {
+    httpOnly: false,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 86400,
+  });
 }
 
 export function clearAuthCookies(res: NextResponse): void {

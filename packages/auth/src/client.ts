@@ -69,6 +69,7 @@ export async function login(input: LoginInput) {
 }
 
 export async function verify2FA(input: TwoFactorInput) {
+  await ensureCsrfCookie();
   const res = await fetch("/api/auth/2fa/verify", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...csrfHeader() },
@@ -94,7 +95,15 @@ export async function verify2FA(input: TwoFactorInput) {
   });
 }
 
+/**
+ * S-17: preflight the CSRF cookie before firing a refresh. Without this, a
+ * tab left open longer than the csrf cookie's 24h Max-Age but shorter than
+ * the rt cookie's 30d Max-Age would 403 on the refresh, silently logging
+ * the user out mid-session. safeParse guards against a valid-2xx but
+ * unexpected-shape body — the old .parse() threw and mimicked SESSION_EXPIRED.
+ */
 export async function refreshAccessToken(): Promise<boolean> {
+  await ensureCsrfCookie();
   useAuthStore.setState({ status: "refreshing" });
   const res = await fetch("/api/auth/refresh", {
     method: "POST",
@@ -106,18 +115,23 @@ export async function refreshAccessToken(): Promise<boolean> {
     return false;
   }
   const body: unknown = await res.json();
-  const parsed = refreshResponseSchema.parse(body);
+  const parsed = refreshResponseSchema.safeParse(body);
+  if (!parsed.success) {
+    useAuthStore.getState().reset();
+    return false;
+  }
   useAuthStore.getState().setRefreshed({
-    accessToken: parsed.access_token,
-    accessTokenExp: parsed.access_token_exp,
-    permissions: parsed.permissions,
-    sessionId: parsed.session_id,
+    accessToken: parsed.data.access_token,
+    accessTokenExp: parsed.data.access_token_exp,
+    permissions: parsed.data.permissions,
+    sessionId: parsed.data.session_id,
   });
   return true;
 }
 
 export async function logout(): Promise<void> {
   try {
+    await ensureCsrfCookie();
     await fetch("/api/auth/logout", {
       method: "POST",
       headers: csrfHeader(),
@@ -144,6 +158,7 @@ export async function requestPasswordReset(
 export async function confirmPasswordReset(
   input: ResetPasswordSubmit,
 ): Promise<void> {
+  await ensureCsrfCookie();
   const res = await fetch("/api/auth/reset-password", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...csrfHeader() },
