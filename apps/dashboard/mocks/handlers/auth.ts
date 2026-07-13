@@ -58,9 +58,12 @@ export const authHandlers = [
     if (seed.needs2Fa) {
       const challengeId = `chal_${crypto.randomUUID()}`;
       activeChallenges.set(challengeId, { userId: seed.user.id });
+      // M-05 parity: backend echoes the enrolled method set here so the
+      // frontend method picker knows what to offer.
       return HttpResponse.json({
         needs_2fa: true,
         two_fa_challenge_id: challengeId,
+        available_methods: ["totp"],
       });
     }
     return HttpResponse.json({
@@ -101,6 +104,7 @@ export const authHandlers = [
     await realDelay();
     const body = (await request.json()) as {
       challenge_id: string;
+      method: string;
       code: string;
       remember_device: boolean;
     };
@@ -109,6 +113,13 @@ export const authHandlers = [
       return HttpResponse.json(
         { code: "INVALID_CREDENTIALS", message: "Challenge expired." },
         { status: 401 },
+      );
+    }
+    // M-02 parity: backend regex validates the method field.
+    if (!["totp", "whatsapp_otp", "backup_code"].includes(body.method)) {
+      return HttpResponse.json(
+        { code: "VALIDATION_FAILED", message: "Unknown 2FA method." },
+        { status: 400 },
       );
     }
     if (body.code !== "000000") {

@@ -7,9 +7,22 @@ export const loginSchema = z.object({
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 
+// M-02: backend TwoFaVerifyRequest requires `method` (@NotBlank + regex
+// "totp|whatsapp_otp|backup_code"). Frontend was omitting it; every verify
+// was 400ing with VALIDATION_FAILED. `method` defaults to "totp" so the
+// existing 6-digit-code UX is a no-op change for TOTP users. WhatsApp OTP
+// + backup code flows will surface a method picker once their UI lands.
+export const twoFactorMethodSchema = z.enum([
+  "totp",
+  "whatsapp_otp",
+  "backup_code",
+]);
+export type TwoFactorMethod = z.infer<typeof twoFactorMethodSchema>;
+
 export const twoFactorSchema = z.object({
   challenge_id: z.string().min(1),
-  code: z.string().regex(/^\d{6}$/u, "Six-digit code."),
+  method: twoFactorMethodSchema.default("totp"),
+  code: z.string().min(6, "Six-digit code.").max(32, "Code too long."),
   remember_device: z.boolean().default(false),
 });
 export type TwoFactorInput = z.infer<typeof twoFactorSchema>;
