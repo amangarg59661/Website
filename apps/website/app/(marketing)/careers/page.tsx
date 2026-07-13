@@ -1,30 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import careersData from "@/content/careers.json";
 import { PageIntro } from "@/components/marketing/PageIntro";
 import { CtaBand } from "@/components/marketing/CtaBand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { site } from "@/config/site";
+import { fetchRoles, REVALIDATE_SECONDS } from "@/lib/careers/fetch";
 
-type Role = {
-  slug: string;
-  title: string;
-  team: string;
-  location: string;
-  type: string;
-  summary: string;
-};
-
-const roles = careersData as Role[];
+/**
+ * C-4: roles source swapped from static content/careers.json import to a
+ * backend fetch with ISR. Layout, styling, motion and copy preserved.
+ */
+export const revalidate = REVALIDATE_SECONDS;
 
 export const metadata: Metadata = {
   title: "Careers",
   description: "Roles at Elite Digital Solutions Studio. Small teams, senior operators.",
 };
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const roles = await fetchRoles();
   return (
     <>
       <PageIntro
