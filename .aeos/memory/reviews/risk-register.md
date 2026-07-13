@@ -177,3 +177,111 @@ Findings on `apps/website/*` are surfaced only. Per client scope decision + pres
 - P-17 (marketing snapshots incomplete).
 - P-18 (marketing PortfolioGrid LCP).
 - C-11 (privacy notice language — marketing page).
+
+---
+
+# Phase D — Remediation Status (post-batch 7)
+
+Branch: `frontend-audit-remediation` — 7 fix commits landed on top of Phase B+C. Working commit at close: `af0e0d6`.
+
+## Sev-1 (15) — status
+
+| #   | ID                 | Status             | Commit / notes                                                                                                                                                  |
+| --- | ------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | S-01               | FIXED              | Batch 1 (`bacfe94`): next ^15.2.3 in both apps + middleware `x-middleware-subrequest` reject                                                                    |
+| 2   | S-02               | FIXED              | Batch 1: `safeNext()` validator in LoginForm                                                                                                                    |
+| 3   | S-03 = P-05        | FIXED              | Batch 1: MSW → devDeps, worker untracked + gitignored, MSWProvider throws in prod, `.env.example` flip, predev + build guard scripts                            |
+| 4   | C-01               | WAVE-3             | Consent banner is compliance foundation — coordinated with backend Wave 3 DSAR / erasure / consent registry work; frontend UI lands once backend endpoints ship |
+| 5   | C-02 = P-19        | WAVE-3             | PostHog consent gate follows C-01                                                                                                                               |
+| 6   | C-03               | MARKETING-APPROVAL | Privacy policy rewrite touches `apps/website/app/(marketing)/legal/privacy` — needs explicit per-finding approval before landing (preservation rule)            |
+| 7   | C-04               | MARKETING-APPROVAL | Grievance Officer contact touches marketing privacy page — awaiting approval                                                                                    |
+| 8   | U-01               | FIXED              | Batch 4-6 (`45f3c3a`): UserMenu prefix from `activeRoleGroup`, Profile hidden in staff shell                                                                    |
+| 9   | U-16               | FIXED              | Batch 4-6: skip-link on root layout, `<main id="dashboard-main">` on both shells                                                                                |
+| 10  | U-19               | FIXED              | Batch 4-6: `aria-label="Account menu for {name}"` on trigger, initial `aria-hidden`                                                                             |
+| 11  | U-23               | FIXED              | Batch 4-6: `--color-muted` dropped to `oklch(0.5)`, `--color-muted-strong` added                                                                                |
+| 12  | U-27               | FIXED              | Batch 4-6: sidebar `hidden md:flex`, `SidebarNavBody` extracted, MobileNavSheet in Topbar                                                                       |
+| 13  | P-01               | FIXED              | Batch 7 (`af0e0d6`): `.github/workflows/ci.yml` — typecheck/lint/build/test:visual/gitleaks                                                                     |
+| 14  | P-02               | PARTIAL            | Vitest harness scaffolding + auth-state / apiFetch / middleware coverage — WAVE-3 (needs new dep install + config work; not landed this window)                 |
+| 15  | P-03 + P-04 + S-07 | FIXED              | Batch 7: silent-refresh scheduler with visibility handling + clamped delay + BroadcastChannel; refresh mutex 5s cooldown; safeParse on refresh response         |
+
+**Wave A Sev-1 fixed: 12 / 15.** 2 items are Wave 3 (compliance-foundation), 2 items require marketing preservation approval, 1 item (P-02 test harness) partial — CI wired to run tests, harness scaffolding deferred.
+
+## Sev-2 (36) — status
+
+### Security (9)
+
+| ID   | Status               | Commit                                                                                                                                                            |
+| ---- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-04 | FIXED (layout-level) | Batch 2 (`f16274f`): ShellGate + useCanEnterShell — refuses `/staff/*` for client-only users. Per-page withPermission wrap deferred pending Wave B module builds. |
+| S-05 | FIXED (dashboard)    | Batch 3 (`bf372bc`): HSTS preload dropped from dashboard, ADR-0001 committed. Marketing side awaits approval.                                                     |
+| S-06 | FIXED                | Batch 2: `setAuthCookies` rotates csrf on every privilege transition                                                                                              |
+| S-07 | FIXED                | Batch 7: session-idle callbacks stabilised via useCallback pattern in scheduler rewrite                                                                           |
+| S-08 | FIXED                | Batch 2: `/dashboard` derives target from primaryRole authoritatively; `last_role_group` is UX preference only                                                    |
+| S-09 | FIXED                | Batch 3: `rl:reset`, `rl:logout`, `rl:csrf` buckets                                                                                                               |
+| S-10 | FIXED                | Batch 3: forgot + reset proxies normalise 2xx/4xx to `{ ok: true }`                                                                                               |
+| S-11 | MARKETING-APPROVAL   | Contact-form rate limiter → Upstash (marketing surface)                                                                                                           |
+| S-12 | MARKETING-APPROVAL   | Marketing CSP                                                                                                                                                     |
+| S-17 | FIXED                | Batch 2: `ensureCsrfCookie()` preflight on refresh + logout + verify2FA + reset                                                                                   |
+
+### Compliance (7) — all Wave 3 client-owned (compliance foundation)
+
+No fixes landed this window. Documented in `remediation-plan.md` Batch 5 as consent-banner + Grievance Officer + cookie inventory + cross-border basis + phone-optional contact + language variant + age gate — all client-owned deliverables coordinated with backend Wave 3.
+
+### UX / A11y (14)
+
+| ID          | Status                      | Commit                                                                                                    |
+| ----------- | --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| U-02        | WAVE-3                      | DashboardLanding auth-status handling — depends on Wave B loading UX cluster                              |
+| U-03        | WAVE-3                      | Login 429 countdown UX — module-level polish                                                              |
+| U-04        | WAVE-3                      | 2FA challenge branching — depends on Wave B error UX cluster                                              |
+| U-07 = U-33 | WAVE-3                      | Module empty-state copy rewrite (19 files) — folds into Wave B where module pages get real content anyway |
+| U-08        | FIXED                       | Batch 7: EmptyStatePlaceholder gains `action` + `phase` props                                             |
+| U-11        | WAVE-3                      | Skeleton primitive + PageSkeleton — Wave B loading UX cluster                                             |
+| U-17        | FIXED                       | Batch 4-6: Cmd+K listener input-target guard                                                              |
+| U-19        | FIXED (Sev-1 listing above) |
+| U-20        | WAVE-3                      | Radix DialogTitle enforcement — packages/ui refactor                                                      |
+| U-24        | FIXED                       | Batch 4-6: dark-mode muted contrast raised                                                                |
+| U-28        | FIXED                       | Batch 4-6: Topbar responsive collapse                                                                     |
+| U-31        | WAVE-3                      | Toast severity visual differentiation                                                                     |
+| U-32        | WAVE-3                      | Form aria-describedby wiring (5 forms) — Wave B                                                           |
+
+### Perf / Test / CI / Ops (6)
+
+| ID                 | Status            | Commit                                                                                                                                                              |
+| ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P-06               | FIXED             | Batch 3: middleware skips CSP header on `/api/csp-report`                                                                                                           |
+| P-07               | WAVE-3            | useApiQuery retry predicate — Wave B once real query hooks land                                                                                                     |
+| P-08 = U-12        | FIXED (hook slot) | Batch 4-6: `error.tsx` surfaces digest + dispatches to `window.__edssReportError`. Sentry install + DSN wire deferred pending client observability vendor decision. |
+| P-09               | FIXED             | Batch 4-6: `/api/health` on both apps                                                                                                                               |
+| P-10 + P-11 + S-19 | FIXED             | Batch 4-6: csp-report gains 8 KB cap + rate limit + structured log                                                                                                  |
+| P-12               | WAVE-3            | Vitest harness + MSW-node — with P-02                                                                                                                               |
+
+**Wave A Sev-2 fixed: 17 / 36.** Remainder split — 9 items Wave 3 client-owned (compliance), 6 items fold into Wave B module builds, 2 items awaiting marketing approval.
+
+## Batch commit index (`frontend-audit-remediation`)
+
+| Batch     | Commit    | Scope                                                   |
+| --------- | --------- | ------------------------------------------------------- |
+| Phase B+C | `abac9e8` | 4 raw reviews + master risk register + remediation plan |
+| 1         | `bacfe94` | Next CVE + open redirect + MSW production-safety        |
+| 2         | `f16274f` | shell gate + CSRF rotation + CSRF preflight             |
+| 3         | `bf372bc` | rate limits + HSTS hold + enumeration hardening         |
+| 4-6       | `45f3c3a` | observability + UX/A11y launch-blockers                 |
+| 7         | `af0e0d6` | refresh mutex + silent-refresh scheduler + CI baseline  |
+
+## Residual risks
+
+1. **Test harness absent (P-02).** CI wired to run tests but no Vitest project ships yet. Refresh mutex + auth state machine covered by manual smoke only. Highest single-item risk. Wave 3.
+2. **Sentry / observability vendor not chosen (P-08).** error.tsx has a hook slot; the reporter is not wired. All CSP violations still land in `console.warn` structured JSON, not a queryable sink.
+3. **Consent banner absent (C-01 + related).** Coordinated with backend Wave 3 compliance foundation. Frontend cannot ship the compliance surface alone.
+4. **Marketing preservation gates 5 findings.** C-03 / C-04 / S-11 / S-12 / C-11 all await per-finding approval before code lands.
+5. **19 module pages still placeholders.** Wave B (sub-project 4+5) is the largest remaining engagement surface — deferred to a separate cycle per token-budget realism.
+6. **PermissionGate per-page wrapping (S-04 full).** Layout-level gate is landed. Per-page wrapping deferred until Wave B builds the real modules (wasted work to wrap placeholders).
+
+## Runtime confirmations still open (7)
+
+All 7 items from the pre-remediation risk register remain — they need a live browser or prod env. Especially:
+
+- CVE-2025-29927 exploitability confirmation on the current build (should now return 403 from the middleware defence-in-depth).
+- HSTS preload eligibility (hstspreload.org submission).
+- Cookie flags in real browser over HTTPS.

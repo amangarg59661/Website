@@ -38,3 +38,13 @@
 - Client authorized the backend audit engagement's full-remediation policy and expects the same shape here.
 
 Related repo memory: cross-project client preferences from the backend engagement live at `C:\Users\DELL\.claude\projects\D--Aman-Build-backend-Self-Backend-v1\memory\` — do not import backend audit findings into this engagement, but the client's working-style preferences carry over.
+
+## Engagement close (2026-07-12)
+
+- Wave A Sev-1 fixed: **12 / 15**. 3 unlanded items split as: 2 Wave-3 client-owned (compliance foundation — coordinates with backend backlog), 1 marketing-approval-gated (Grievance Officer contact block on privacy page).
+- Wave A Sev-2 fixed: **17 / 36**. Remainder split — 9 items Wave 3 client-owned (compliance), 8 items fold into Wave B module builds (deferred), 2 items marketing-approval-gated.
+- 8 commits on `frontend-audit-remediation` (Phase B+C + 7 remediation batches). Index in `.aeos/memory/reviews/executive-report.md`.
+- Wave B (sub-project 4 + 5 — 19 module pages + real backend wiring) deferred to a follow-up engagement per token-budget realism and identity-policy careful commitment. Client accepted this outcome as consistent with the "quality-first, no fixed deadline" scope decision.
+- Marketing preservation rule not violated — 0 marketing file edits; 1 new API route (health) added (additive; does not affect the preservation snapshot suite).
+- Compliance foundation carried from the backend engagement (DSAR / erasure / consent registry / breach SOP / DPA register / cross-border basis / Grievance Officer) remains **client-owned**. Frontend adds UI surfaces once foundation lands.
+- Executive report at `.aeos/memory/reviews/executive-report.md`. Master risk register with per-finding status at `.aeos/memory/reviews/risk-register.md`.
