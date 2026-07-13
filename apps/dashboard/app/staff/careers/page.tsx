@@ -40,7 +40,7 @@ export default function StaffCareersPage() {
   const countByStatus = useMemo(() => {
     const acc: Record<string, number> = { all: 0, published: 0, draft: 0, archived: 0 };
     for (const p of postings.data ?? []) {
-      acc.all += 1;
+      acc.all = (acc.all ?? 0) + 1;
       acc[p.status] = (acc[p.status] ?? 0) + 1;
     }
     return acc;

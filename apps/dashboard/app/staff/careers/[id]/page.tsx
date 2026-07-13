@@ -18,8 +18,8 @@ import {
   PostingForm,
   postingFormValueForCreate,
   postingToDefaults,
+  postingToInternalDefaults,
   usePostingForm,
-  type PostingFormValue,
 } from "@/components/careers/PostingForm";
 
 export default function JobPostingDetailPage() {
@@ -37,9 +37,10 @@ export default function JobPostingDetailPage() {
   const form = usePostingForm(posting.data ? postingToDefaults(posting.data) : undefined);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Re-hydrate form once the backend replies.
+  // Re-hydrate form once the backend replies. form.reset expects the
+  // internal (bullet-wrapped) shape, so we run the internal converter.
   useEffect(() => {
-    if (posting.data) form.reset(postingToDefaults(posting.data));
+    if (posting.data) form.reset(postingToInternalDefaults(posting.data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posting.data?.id]);
 
@@ -242,7 +243,7 @@ export default function JobPostingDetailPage() {
       <PostingForm
         form={form}
         disableSlug
-        onSubmit={(value: PostingFormValue) => {
+        onSubmit={(value) => {
           setSubmitError(null);
           const shaped = postingFormValueForCreate(value);
           const { slug: _slug, ...updatePayload } = shaped;

@@ -15,5 +15,8 @@
     "eslint": ">=9",
     "prettier": ">=3",
     "typescript": ">=5"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "^3.2.0"
   }
 }
