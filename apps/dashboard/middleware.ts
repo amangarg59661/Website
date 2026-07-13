@@ -16,6 +16,18 @@ const twofaLimit = redis
 const forgotLimit = redis
   ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, "1 h"), prefix: "rl:forgot" })
   : null;
+// S-09: reset tokens are the highest-value guessable credential — cap at
+// 10/hour/IP+UA. logout + csrf-token are also uncapped today; add modest
+// budgets to blunt session-invalidation DoS + mint-spam.
+const resetLimit = redis
+  ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, "1 h"), prefix: "rl:reset" })
+  : null;
+const logoutLimit = redis
+  ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(30, "1 m"), prefix: "rl:logout" })
+  : null;
+const csrfLimit = redis
+  ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(60, "1 m"), prefix: "rl:csrf" })
+  : null;
 
 const PUBLIC_ROUTES = ["/login", "/login/2fa-challenge", "/forgot-password", "/reset-password"];
 const AUTH_PROXY_ROUTES = [
@@ -47,8 +59,11 @@ function buildCsp(nonce: string): string {
   ].join("; ");
 }
 
+// S-05: `preload` deferred until hstspreload.org confirmation lands. Once
+// every subdomain is HTTPS-verified and the site is on the preload list,
+// re-add `; preload`. Documented in `docs/adr/0001-hsts-preload-hold.md`.
 const SECURITY_HEADERS: Record<string, string> = {
-  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
@@ -58,9 +73,13 @@ const SECURITY_HEADERS: Record<string, string> = {
   "X-DNS-Prefetch-Control": "off",
 };
 
-function applyHeaders(res: NextResponse, nonce: string): NextResponse {
+function applyHeaders(res: NextResponse, nonce: string, includeCsp: boolean = true): NextResponse {
   for (const [k, v] of Object.entries(SECURITY_HEADERS)) res.headers.set(k, v);
-  res.headers.set("Content-Security-Policy", buildCsp(nonce));
+  // P-06: skip the CSP allocation on the csp-report sink — it's a report
+  // ingest, not a page render, and building the template is wasted work.
+  if (includeCsp) {
+    res.headers.set("Content-Security-Policy", buildCsp(nonce));
+  }
   return res;
 }
 
@@ -114,7 +133,7 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const key = clientKey(req);
-  if (req.method === "POST") {
+  if (req.method === "POST" || (req.method === "GET" && pathname === "/api/auth/csrf-token")) {
     let limitResult: { ok: boolean; retryAfter: number } | null = null;
     if (pathname === "/api/auth/login") limitResult = await checkRateLimit(loginLimit, key);
     else if (pathname === "/api/auth/refresh")
@@ -123,6 +142,12 @@ export async function middleware(req: NextRequest) {
       limitResult = await checkRateLimit(twofaLimit, `${key}|2fa`);
     else if (pathname === "/api/auth/forgot-password")
       limitResult = await checkRateLimit(forgotLimit, `${key}|forgot`);
+    else if (pathname === "/api/auth/reset-password")
+      limitResult = await checkRateLimit(resetLimit, `${key}|reset`);
+    else if (pathname === "/api/auth/logout")
+      limitResult = await checkRateLimit(logoutLimit, `${key}|logout`);
+    else if (pathname === "/api/auth/csrf-token")
+      limitResult = await checkRateLimit(csrfLimit, `${key}|csrf`);
     if (limitResult && !limitResult.ok) {
       const res = new NextResponse(
         JSON.stringify({
@@ -179,7 +204,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const res = NextResponse.next({ request: { headers: requestHeaders } });
-  return applyHeaders(res, nonce);
+  return applyHeaders(res, nonce, pathname !== "/api/csp-report");
 }
 
 export const config = {
