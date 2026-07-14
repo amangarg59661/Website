@@ -1,7 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
+  "framework": "nextjs",
   "installCommand": "npm install",
-  "framework": null,
+  "buildCommand": "npx turbo run build --filter=@edss/website",
+  "outputDirectory": "apps/website/.next",
+  "ignoreCommand": "npx turbo-ignore @edss/website",
   "git": { "deploymentEnabled": { "main": true } }
 }
