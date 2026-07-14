@@ -3,6 +3,12 @@ name: CI
 on:
   push:
     branches: [main]
+    paths-ignore:
+      # Baseline-only auto-commits from the test-visual job would otherwise
+      # loop the workflow. Real code changes that also touch baselines still
+      # trigger CI because paths-ignore only skips when *all* changed files
+      # match — a single non-baseline change breaks the ignore.
+      - "tests/visual/snapshot.spec.ts-snapshots/**"
   pull_request:
     branches: [main]
 
@@ -71,19 +77,19 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      # Runs with playwright's `updateSnapshots: "missing"` so any missing
-      # Linux baseline gets written on this run instead of failing.
-      # Existing baselines still fail on visual diff — the preservation
-      # gate is only relaxed for first-run capture, not for real changes.
-      - name: Run marketing snapshot suite
+      # Playwright with `updateSnapshots: "missing"` writes missing baseline
+      # PNGs but still marks tests failed via a softError so the CI knows a
+      # human needs to notice. `continue-on-error` absorbs that failure so
+      # the commit-back step can push the fresh files. This step is main-only
+      # so unreviewed baselines never land automatically from PR branches.
+      - name: Capture missing baselines
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
         env:
           NEXT_PUBLIC_USE_MOCKS: "false"
           NEXT_PUBLIC_API_BASE: "https://api.edss.example"
         run: npm run test:visual
 
-      # Push any first-run Linux baselines back so subsequent runs on any
-      # branch have a real diff target. Only fires on pushes to main (not
-      # on PR branches) so unreviewed baselines never land automatically.
       - name: Commit newly-captured baselines
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
@@ -97,10 +103,20 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(visual): capture linux marketing snapshot baselines" \
+          git commit -m "chore(visual): capture linux marketing snapshot baselines [skip ci]" \
                      -m "Auto-captured by the test-visual CI job. Regenerates any missing *-linux.png baselines so the marketing preservation snapshot suite can gate against them on subsequent runs."
 
           git push origin HEAD:main
+
+      # Gate step. Runs whether or not the capture step above ran (the branch
+      # gate for capture is main-only; PRs skip straight to this). Baselines
+      # written by the capture step are now on disk, so playwright compares
+      # against them here. Any real visual regression fails this step.
+      - name: Run marketing snapshot suite (gate)
+        env:
+          NEXT_PUBLIC_USE_MOCKS: "false"
+          NEXT_PUBLIC_API_BASE: "https://api.edss.example"
+        run: npm run test:visual
 
       - name: Upload snapshot report on failure
         if: failure()
