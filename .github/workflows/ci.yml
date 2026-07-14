@@ -51,9 +51,13 @@ jobs:
   test-visual:
     name: marketing preservation
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -67,8 +71,39 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      # Runs with playwright's `updateSnapshots: "missing"` so any missing
+      # Linux baseline gets written on this run instead of failing.
+      # Existing baselines still fail on visual diff — the preservation
+      # gate is only relaxed for first-run capture, not for real changes.
       - name: Run marketing snapshot suite
+        env:
+          NEXT_PUBLIC_USE_MOCKS: "false"
+          NEXT_PUBLIC_API_BASE: "https://api.edss.example"
         run: npm run test:visual
+
+      # Push any first-run Linux baselines back so subsequent runs on any
+      # branch have a real diff target. Only fires on pushes to main (not
+      # on PR branches) so unreviewed baselines never land automatically.
+      - name: Commit newly-captured baselines
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add tests/visual/snapshot.spec.ts-snapshots
+
+          if git diff --cached --quiet; then
+            echo "No new baselines to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(visual): capture linux marketing snapshot baselines
+
+Auto-captured by the test-visual CI job.  Regenerates any missing
+*-linux.png baselines so the marketing preservation snapshot suite
+can gate against them on subsequent runs."
+
+          git push origin HEAD:main
 
       - name: Upload snapshot report on failure
         if: failure()

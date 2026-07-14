@@ -7,6 +7,7 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: [["list"]],
+  updateSnapshots: "missing",
   use: {
     baseURL: "http://localhost:3000",
     trace: "off",
