@@ -97,11 +97,8 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(visual): capture linux marketing snapshot baselines
-
-Auto-captured by the test-visual CI job.  Regenerates any missing
-*-linux.png baselines so the marketing preservation snapshot suite
-can gate against them on subsequent runs."
+          git commit -m "chore(visual): capture linux marketing snapshot baselines" \
+                     -m "Auto-captured by the test-visual CI job. Regenerates any missing *-linux.png baselines so the marketing preservation snapshot suite can gate against them on subsequent runs."
 
           git push origin HEAD:main
 
