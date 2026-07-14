@@ -172,7 +172,7 @@ const seedApplications: Application[] = [
 ];
 
 let postings = [...seedPostings];
-let applications = [...seedApplications];
+const applications = [...seedApplications];
 
 function slugify(input: string): string {
   return input

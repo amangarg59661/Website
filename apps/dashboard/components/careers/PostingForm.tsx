@@ -268,7 +268,9 @@ export function PostingForm({
             Add
           </button>
         </div>
-        <FieldHint>Each line shows as a bullet under "What we're looking for".</FieldHint>
+        <FieldHint>
+          Each line shows as a bullet under &ldquo;What we&rsquo;re looking for&rdquo;.
+        </FieldHint>
         <ul className="mt-3 flex flex-col gap-2">
           {requirements.fields.map((field, index) => (
             <li key={field.id} className="flex items-center gap-2">

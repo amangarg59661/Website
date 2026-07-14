@@ -10,7 +10,7 @@
     "build": "next build",
     "postbuild": "node scripts/assert-no-msw-in-build.mjs post",
     "start": "next start -p 3001",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "msw:init": "msw init public/ --save",
     "format": "prettier --write \"**/*.{ts,tsx,md,mdx,css,json}\""
