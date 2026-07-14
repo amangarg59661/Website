@@ -67,7 +67,7 @@ export const cases: Case[] = [
     summary:
       "Multi-tenant clinical workflow platform for oncology practices, engineered for compliance from day one and shipped to the first paying customer in a single quarter.",
     hero: {
-      src: "https://images.unsplash.com/photo-1559163387-207d63de6d21?auto=format&fit=crop&w=2000&q=80",
+      src: "/portfolio/saas-rebuild-hero.jpg",
       alt: "Clinical workflow interface",
     },
     metrics: [
