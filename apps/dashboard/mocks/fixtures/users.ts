@@ -82,6 +82,10 @@ export const staffPermissions: Permission[] = [
   "notifications:read",
   "settings:read",
   "settings:write",
+  "careers:read",
+  "careers:write",
+  "careers:applications:read",
+  "careers:applications:write",
 ];
 
 export function permissionsFor(userId: string): Permission[] {

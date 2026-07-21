@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/contact/schema";
-import { env } from "@/config/env";
 
 /**
  * C-3: marketing contact endpoint is now a thin BFF that forwards to the

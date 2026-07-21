@@ -15,7 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,mdx,css,json}\"",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-"prepare": "husky install || true"
+    "prepare": "node -e \"if (!process.env.CI && !process.env.VERCEL) { try { require('child_process').execSync('husky', { stdio: 'inherit' }); } catch (e) { console.warn('husky not available, skipping:', e.message); } }\""
   },
   "devDependencies": {
     "@edss/config": "*",

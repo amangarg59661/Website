@@ -6,13 +6,16 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { site } from "@/config/site";
-import { fetchRoles, REVALIDATE_SECONDS } from "@/lib/careers/fetch";
+import { fetchRoles } from "@/lib/careers/fetch";
 
 /**
  * C-4: roles source swapped from static content/careers.json import to a
  * backend fetch with ISR. Layout, styling, motion and copy preserved.
+ *
+ * `revalidate` must be a literal integer for Next's build-time analysis
+ * to pick it up — keep in sync with REVALIDATE_SECONDS in lib/careers/fetch.
  */
-export const revalidate = REVALIDATE_SECONDS;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Careers",

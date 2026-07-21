@@ -8,7 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@edss/ui/button";
 import { formatDate } from "@edss/utils/format";
 import { site } from "@/config/site";
-import { fetchRole, fetchRoles, REVALIDATE_SECONDS } from "@/lib/careers/fetch";
+import { fetchRole, fetchRoles } from "@/lib/careers/fetch";
 import { ApplyForm } from "@/components/marketing/ApplyForm";
 
 /**
@@ -16,8 +16,11 @@ import { ApplyForm } from "@/components/marketing/ApplyForm";
  * layout, motion, aside, prose section and CTA all preserved. Apply flow
  * changed from mailto to a real form section at the bottom of the page.
  * Aside "Apply" button anchors to that form.
+ *
+ * `revalidate` must be a literal integer for Next's build-time analysis
+ * to pick it up — keep in sync with REVALIDATE_SECONDS in lib/careers/fetch.
  */
-export const revalidate = REVALIDATE_SECONDS;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const roles = await fetchRoles();
